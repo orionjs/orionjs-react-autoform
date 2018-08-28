@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Form} from 'simple-react-form'
 import autobind from 'autobind-decorator'
+import {dotGetSchema} from '@orion-js/schema'
 
 export default class AutoFormForm extends React.Component {
   static propTypes = {
@@ -17,7 +18,8 @@ export default class AutoFormForm extends React.Component {
     schema: PropTypes.object,
     clean: PropTypes.func,
     validate: PropTypes.func,
-    onError: PropTypes.func
+    onError: PropTypes.func,
+    getErrorText: PropTypes.func
   }
 
   static defaultProps = {
@@ -102,7 +104,9 @@ export default class AutoFormForm extends React.Component {
     const messages = {}
     for (const key of Object.keys(validationErrors)) {
       const code = validationErrors[key]
-      const text = code
+      const keySchema = dotGetSchema(this.props.schema, key)
+      if (!keySchema) continue
+      const text = this.props.getErrorText(code, keySchema) || code
       messages[key] = text
     }
     return messages

@@ -12,7 +12,8 @@ import {getValidationErrors, clean} from '@orion-js/schema'
 export default passedOptions => {
   const defaultOptions = {
     fields: {},
-    onError: error => alert(error.message)
+    onError: error => alert(error.message),
+    getErrorText: (code, field) => code
   }
   const options = {...defaultOptions, ...passedOptions}
 
@@ -33,7 +34,8 @@ export default passedOptions => {
       validate: PropTypes.func,
       schema: PropTypes.object,
       omit: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-      only: PropTypes.string
+      only: PropTypes.string,
+      getErrorText: PropTypes.func
     }
 
     static defaultProps = {
@@ -42,7 +44,9 @@ export default passedOptions => {
       validate: async (schema, doc) => await getValidationErrors(schema, doc),
       omit: [],
       onSuccess: () => {},
-      onValidationError: () => {}
+      onValidationError: () => {},
+      onError: options.onError,
+      getErrorText: options.getErrorText
     }
 
     @autobind
@@ -88,10 +92,11 @@ export default passedOptions => {
                   params={params}
                   schema={this.props.schema || params}
                   onSuccess={this.props.onSuccess}
-                  onError={this.props.onError || options.onError}
+                  onError={this.props.onError}
                   getErrorFieldLabel={this.props.getErrorFieldLabel}
                   onValidationError={this.props.onValidationError}
                   clean={this.props.clean}
+                  getErrorText={this.props.getErrorText}
                   validate={this.props.validate}>
                   {this.renderChildren({params})}
                 </Form>
