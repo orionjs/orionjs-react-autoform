@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import WithParams from './WithParams'
 import Form from './Form'
-import createSchemaToField from './createSchemaToField'
+import createGetFieldComponent from './createGetFieldComponent'
 import autobind from 'autobind-decorator'
 import Fields from './Fields'
 import WithMutation from './WithMutation'
@@ -17,9 +17,9 @@ export default passedOptions => {
   }
   const options = {...defaultOptions, ...passedOptions}
 
-  const schemaToField = createSchemaToField(options.fields)
+  const getFieldComponent = createGetFieldComponent(options.fields)
 
-  return class AutoForm extends React.Component {
+  class AutoForm extends React.Component {
     static propTypes = {
       mutation: PropTypes.string,
       doc: PropTypes.object,
@@ -39,7 +39,7 @@ export default passedOptions => {
     }
 
     static defaultProps = {
-      children: props => <Fields schemaToField={schemaToField} {...props} />,
+      children: props => <Fields getFieldComponent={getFieldComponent} {...props} />,
       clean: async (schema, doc) => await clean(schema, doc),
       validate: async (schema, doc) => await getValidationErrors(schema, doc),
       omit: [],
@@ -107,4 +107,8 @@ export default passedOptions => {
       )
     }
   }
+
+  AutoForm.getFieldComponent = getFieldComponent
+
+  return AutoForm
 }

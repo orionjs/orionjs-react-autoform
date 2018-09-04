@@ -8,7 +8,7 @@ export default class AutoFormField extends React.Component {
   static propTypes = {
     field: PropTypes.object,
     fieldName: PropTypes.string,
-    schemaToField: PropTypes.func,
+    getFieldComponent: PropTypes.func,
     only: PropTypes.string,
     passProps: PropTypes.object
   }
@@ -20,7 +20,7 @@ export default class AutoFormField extends React.Component {
           key={key}
           field={fields[key]}
           fieldName={key}
-          schemaToField={this.props.schemaToField}
+          getFieldComponent={this.props.getFieldComponent}
           passProps={this.props.passProps}
         />
       )
@@ -38,13 +38,13 @@ export default class AutoFormField extends React.Component {
       fieldName: this.props.fieldName
     }
     if (isArray(type) && isPlainObject(type[0])) {
-      props.type = this.props.schemaToField({type: 'array'})
+      props.type = this.props.getFieldComponent({type: 'array'})
       props.children = this.renderObjectFields(type[0])
     } else if (isPlainObject(type)) {
-      props.type = this.props.schemaToField({type: 'plainObject'})
+      props.type = this.props.getFieldComponent({type: 'plainObject'})
       props.children = this.renderObjectFields(type)
     } else {
-      props.type = this.props.schemaToField(field)
+      props.type = this.props.getFieldComponent(field)
     }
     return <Field {...props} />
   }

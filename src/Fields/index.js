@@ -7,7 +7,7 @@ import isArray from 'lodash/isArray'
 export default class Fields extends React.Component {
   static propTypes = {
     params: PropTypes.object,
-    schemaToField: PropTypes.func,
+    getFieldComponent: PropTypes.func,
     parent: PropTypes.any,
     omit: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
     only: PropTypes.string,
@@ -35,7 +35,7 @@ export default class Fields extends React.Component {
             parent={this.props.parent}
             field={params[key]}
             fieldName={key}
-            schemaToField={this.props.schemaToField}
+            getFieldComponent={this.props.getFieldComponent}
             passProps={this.props.passProps}
           />
         )
