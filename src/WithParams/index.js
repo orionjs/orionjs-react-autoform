@@ -23,14 +23,15 @@ export default class AutoFormWithSchema extends React.Component {
     return (
       <Query query={query} variables={{name: this.props.name}}>
         {({loading, error, data}) => {
-          if (error) {
-            console.warn(error)
-            return null
+          if (data && data.params) {
+            return this.props.children(data.params)
           }
 
-          if (loading) return null
-          if (!data.params) return null
-          return this.props.children(data.params)
+          if (error) {
+            console.warn(error)
+          }
+
+          return null
         }}
       </Query>
     )
