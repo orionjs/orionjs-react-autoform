@@ -28,7 +28,7 @@ export default class AutoFormField extends React.Component {
   }
 
   renderField(field) {
-    const {type, label, placeholder, description, fieldOptions = {}} = field
+    const {type, label, placeholder, description, fieldType, fieldOptions = {}} = field
     const props = {
       label,
       placeholder,
@@ -37,7 +37,10 @@ export default class AutoFormField extends React.Component {
       ...this.props.passProps,
       fieldName: this.props.fieldName
     }
-    if (isArray(type) && isPlainObject(type[0])) {
+
+    if (fieldType) {
+      props.type = this.props.getFieldComponent(field)
+    } else if (isArray(type) && isPlainObject(type[0])) {
       props.type = this.props.getFieldComponent({type: 'array'})
       props.children = this.renderObjectFields(type[0])
     } else if (isPlainObject(type)) {
@@ -46,6 +49,7 @@ export default class AutoFormField extends React.Component {
     } else {
       props.type = this.props.getFieldComponent(field)
     }
+
     return <Field {...props} />
   }
 
