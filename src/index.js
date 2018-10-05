@@ -13,7 +13,8 @@ export default passedOptions => {
   const defaultOptions = {
     fields: {},
     onError: error => alert(error.message),
-    getErrorText: (code, field) => code
+    getErrorText: (code, field) => code,
+    loading: null
   }
   const options = {...defaultOptions, ...passedOptions}
 
@@ -77,7 +78,7 @@ export default passedOptions => {
 
     render() {
       return (
-        <WithParams name={this.props.mutation}>
+        <WithParams name={this.props.mutation} loading={options.loading}>
           {({name, result, basicResultQuery, params}) => (
             <WithMutation
               params={params}

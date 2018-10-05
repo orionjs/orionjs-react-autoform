@@ -16,7 +16,8 @@ const query = gql`
 export default class AutoFormWithSchema extends React.Component {
   static propTypes = {
     children: PropTypes.func,
-    name: PropTypes.string
+    name: PropTypes.string,
+    loading: PropTypes.node
   }
 
   render() {
@@ -28,10 +29,12 @@ export default class AutoFormWithSchema extends React.Component {
           }
 
           if (error) {
-            console.warn(error)
+            console.error('Error fetching autoform information')
+            console.error(error)
+            return null
           }
 
-          return null
+          return this.props.loading
         }}
       </Query>
     )
