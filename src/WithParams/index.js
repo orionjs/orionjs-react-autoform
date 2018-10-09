@@ -34,7 +34,8 @@ export default class AutoFormWithSchema extends React.Component {
             return null
           }
 
-          return this.props.loading
+          if (this.props.loading) return this.props.loading
+          return null
         }}
       </Query>
     )
