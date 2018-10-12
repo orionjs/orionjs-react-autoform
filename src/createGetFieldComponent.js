@@ -12,8 +12,6 @@ const rootTypes = {
   date: 'date'
 }
 
-const arrayRootTypes = {}
-
 export default fields => {
   const getField = function(key) {
     const field = fields[key]
@@ -26,9 +24,10 @@ export default fields => {
       return getField(field.fieldType)
     }
 
-    const fieldMap = isArray(field.type) ? arrayRootTypes : rootTypes
     const typeId = isArray(field.type) ? field.type[0] : field.type
-    const rootType = fieldMap[typeId]
+    const rootType = isArray(field.type)
+      ? rootTypes[typeId] && `[${rootTypes[typeId]}]`
+      : rootTypes[typeId]
     if (rootType) {
       return getField(rootType)
     }
