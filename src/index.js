@@ -14,7 +14,8 @@ export default passedOptions => {
     fields: {},
     onError: error => alert(error.message),
     getErrorText: (code, field) => code,
-    loading: null
+    loading: null,
+    getDefaultLabel: () => 'This field'
   }
   const options = {...defaultOptions, ...passedOptions}
 
@@ -36,7 +37,8 @@ export default passedOptions => {
       schema: PropTypes.object,
       omit: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
       only: PropTypes.string,
-      getErrorText: PropTypes.func
+      getErrorText: PropTypes.func,
+      getDefaultLabel: PropTypes.func
     }
 
     static defaultProps = {
@@ -47,7 +49,8 @@ export default passedOptions => {
       onSuccess: () => {},
       onValidationError: () => {},
       onError: options.onError,
-      getErrorText: options.getErrorText
+      getErrorText: options.getErrorText,
+      getDefaultLabel: options.getDefaultLabel
     }
 
     @autobind
@@ -91,6 +94,7 @@ export default passedOptions => {
                   mutate={mutate}
                   onChange={this.props.onChange}
                   params={params}
+                  getDefaultLabel={this.props.getDefaultLabel}
                   schema={this.props.schema || params}
                   onSuccess={this.props.onSuccess}
                   onError={this.props.onError}

@@ -19,7 +19,8 @@ export default class AutoFormForm extends React.Component {
     clean: PropTypes.func,
     validate: PropTypes.func,
     onError: PropTypes.func,
-    getErrorText: PropTypes.func
+    getErrorText: PropTypes.func,
+    getDefaultLabel: PropTypes.func
   }
 
   static defaultProps = {
@@ -104,8 +105,9 @@ export default class AutoFormForm extends React.Component {
     const messages = {}
     for (const key of Object.keys(validationErrors)) {
       const code = validationErrors[key]
-      const keySchema = dotGetSchema(this.props.schema, key)
+      let keySchema = dotGetSchema(this.props.schema, key)
       if (!keySchema) continue
+      keySchema = {label: this.props.getDefaultLabel(), ...keySchema}
       const text = this.props.getErrorText(code, keySchema) || code
       messages[key] = text
     }
