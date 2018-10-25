@@ -10,7 +10,8 @@ export default class WithMutation extends React.Component {
     children: PropTypes.func,
     params: PropTypes.object,
     mutation: PropTypes.string,
-    fragment: PropTypes.any
+    fragment: PropTypes.any,
+    refetchQueries: PropTypes.array
   }
 
   getArguments() {
@@ -48,12 +49,14 @@ export default class WithMutation extends React.Component {
   }
 
   getMutation() {
+    const {client, fragment, refetchQueries} = this.props
     const text = this.getMutationText()
-    const mutation = gql([text, ''], this.props.fragment || '')
+    const mutation = gql([text, ''], fragment || '')
     return async variables => {
-      const {data} = await this.props.client.mutate({
+      const {data} = await client.mutate({
         mutation,
-        variables
+        variables,
+        refetchQueries
       })
       return data.result
     }

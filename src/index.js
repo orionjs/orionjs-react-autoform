@@ -38,7 +38,8 @@ export default passedOptions => {
       omit: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
       only: PropTypes.string,
       getErrorText: PropTypes.func,
-      getDefaultLabel: PropTypes.func
+      getDefaultLabel: PropTypes.func,
+      refetchQueries: PropTypes.array
     }
 
     static defaultProps = {
@@ -84,6 +85,7 @@ export default passedOptions => {
         <WithParams name={this.props.mutation} loading={options.loading}>
           {({name, result, basicResultQuery, params}) => (
             <WithMutation
+              refetchQueries={this.props.refetchQueries}
               params={params}
               fragment={this.getFragment({name, result, basicResultQuery, params})}
               mutation={this.props.mutation}>
