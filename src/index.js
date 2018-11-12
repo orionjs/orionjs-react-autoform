@@ -105,7 +105,7 @@ export default passedOptions => {
                   clean={this.props.clean}
                   getErrorText={this.props.getErrorText}
                   validate={this.props.validate}>
-                  {this.renderChildren({params})}
+                  {this.renderChildren({params: this.props.schema || params})}
                 </Form>
               )}
             </WithMutation>
