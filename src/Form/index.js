@@ -95,8 +95,8 @@ export default class AutoFormForm extends React.Component {
 
   @autobind
   onChange(doc) {
-    this.props.onChange(doc)
     this.setState({doc})
+    this.props.onChange(doc)
   }
 
   getErrorMessages() {
