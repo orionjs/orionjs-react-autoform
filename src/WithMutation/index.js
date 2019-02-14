@@ -16,21 +16,26 @@ export default class WithMutation extends React.Component {
 
   getArguments() {
     const keys = Object.keys(this.props.params)
-    return keys
+    if(keys.length === 0) return ''
+    const arguments = keys
       .map(key => {
         const field = this.props.params[key]
         return `$${key}: ${field.__graphQLType}`
       })
       .join(', ')
+    
+    return `(${arguments})`
   }
 
   getParams() {
     const keys = Object.keys(this.props.params)
-    return keys
+    if(keys.length === 0) return ''
+    const params = keys
       .map(key => {
         return `${key}: $${key}`
       })
       .join(', ')
+    return `(${params})`
   }
 
   getSubselection() {
@@ -42,8 +47,8 @@ export default class WithMutation extends React.Component {
 
   getMutationText() {
     return `
-      mutation ${this.props.mutation} (${this.getArguments()}) {
-        result: ${this.props.mutation}  (${this.getParams()}) ${this.getSubselection()}
+      mutation ${this.props.mutation} ${this.getArguments()} {
+        result: ${this.props.mutation}  ${this.getParams()} ${this.getSubselection()}
       }
     `
   }
