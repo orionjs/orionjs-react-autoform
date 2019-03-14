@@ -17,7 +17,7 @@ export default class AutoFormField extends React.Component {
 
   renderObjectFields(fields) {
     const currentOmit = this.props.omit
-      .filter(key => key.startsWith(this.props.fieldName + '.'))
+      .filter(key => key && key.startsWith(this.props.fieldName + '.'))
       .map(key => key.replace(this.props.fieldName + '.', ''))
 
     return Object.keys(fields)
