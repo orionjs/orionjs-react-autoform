@@ -31,6 +31,7 @@ export default class Fields extends React.Component {
         return (
           <Param
             key={key}
+            omit={omit}
             only={this.props.only}
             parent={this.props.parent}
             field={params[key]}

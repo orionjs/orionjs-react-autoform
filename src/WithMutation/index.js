@@ -16,20 +16,20 @@ export default class WithMutation extends React.Component {
 
   getArguments() {
     const keys = Object.keys(this.props.params)
-    if(keys.length === 0) return ''
+    if (keys.length === 0) return ''
     const args = keys
       .map(key => {
         const field = this.props.params[key]
         return `$${key}: ${field.__graphQLType}`
       })
       .join(', ')
-    
+
     return `(${args})`
   }
 
   getParams() {
     const keys = Object.keys(this.props.params)
-    if(keys.length === 0) return ''
+    if (keys.length === 0) return ''
     const params = keys
       .map(key => {
         return `${key}: $${key}`
