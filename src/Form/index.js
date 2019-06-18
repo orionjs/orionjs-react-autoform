@@ -148,7 +148,6 @@ export default class AutoFormForm extends React.Component {
   }
 
   render() {
-    console.log('button ref', this.props.buttonRef)
     this.props.setRef(this)
 
     return (
