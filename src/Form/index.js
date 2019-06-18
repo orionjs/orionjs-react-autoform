@@ -32,6 +32,13 @@ export default class AutoFormForm extends React.Component {
   state = {}
 
   componentDidMount() {
+    this.setOnClick()
+    // set on click the bad way
+    setTimeout(this.setOnClick, 10)
+    setTimeout(this.setOnClick, 100)
+  }
+
+  setOnClick = () => {
     const ref = this.props.buttonRef
     if (ref && ref.current) {
       ref.current.setOnClick(this.submit)
@@ -141,6 +148,7 @@ export default class AutoFormForm extends React.Component {
   }
 
   render() {
+    console.log('button ref', this.props.buttonRef)
     this.props.setRef(this)
 
     return (
