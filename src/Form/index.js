@@ -20,7 +20,8 @@ export default class AutoFormForm extends React.Component {
     validate: PropTypes.func,
     onError: PropTypes.func,
     getErrorText: PropTypes.func,
-    getDefaultLabel: PropTypes.func
+    getDefaultLabel: PropTypes.func,
+    buttonRef: PropTypes.any
   }
 
   static defaultProps = {
@@ -30,9 +31,23 @@ export default class AutoFormForm extends React.Component {
 
   state = {}
 
+  componentDidMount() {
+    const ref = this.props.buttonRef
+    if (ref && ref.current) {
+      ref.current.setOnClick(this.submit)
+    }
+  }
+
+  componentWillUnmount() {
+    const ref = this.props.buttonRef
+    if (ref && ref.current) {
+      ref.current.setOnClick(null)
+    }
+  }
+
   @autobind
   submit() {
-    return this.form.submit()
+    return this.submitForm()
   }
 
   handleError(error, doc) {
@@ -59,7 +74,18 @@ export default class AutoFormForm extends React.Component {
   }
 
   @autobind
-  async onSubmit(data) {
+  async onSubmit() {
+    const ref = this.props.buttonRef
+    if (ref && ref.current) {
+      return ref.current.click()
+    } else {
+      return this.submit()
+    }
+  }
+
+  @autobind
+  async submitForm() {
+    const data = this.form.state.value
     try {
       const errors = await this.validate(data)
       if (errors) {
@@ -115,9 +141,11 @@ export default class AutoFormForm extends React.Component {
   }
 
   render() {
+    this.props.setRef(this)
+
     return (
       <Form
-        ref={this.props.setRef}
+        ref={form => (this.form = form)}
         state={this.props.doc}
         errorMessages={this.getErrorMessages()}
         onChange={this.onChange}

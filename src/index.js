@@ -39,7 +39,8 @@ export default passedOptions => {
       only: PropTypes.string,
       getErrorText: PropTypes.func,
       getDefaultLabel: PropTypes.func,
-      refetchQueries: PropTypes.array
+      refetchQueries: PropTypes.array,
+      buttonRef: PropTypes.any
     }
 
     static defaultProps = {
@@ -92,6 +93,7 @@ export default passedOptions => {
               {mutate => (
                 <Form
                   setRef={form => (this.form = form)}
+                  buttonRef={this.props.buttonRef}
                   doc={this.props.doc}
                   mutate={mutate}
                   onChange={this.props.onChange}
