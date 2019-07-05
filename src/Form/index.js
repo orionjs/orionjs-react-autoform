@@ -98,7 +98,7 @@ export default class AutoFormForm extends React.Component {
       if (errors) {
         return {error: new Error('validationError'), result: null}
       } else {
-        const cleaned = await this.props.clean(this.props.params, data)
+        const cleaned = await this.props.clean(this.props.schema, data)
         const result = await this.props.mutate(cleaned)
         const mutationResult = await this.props.onSuccess(result)
         return {error: null, result: mutationResult}
