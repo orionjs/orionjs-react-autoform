@@ -25,9 +25,7 @@ export default class AutoFormField extends React.Component {
       .map(key => key.replace(this.props.fieldName + '.', ''))
 
     return Object.keys(fields)
-      .filter(key =>
-        this.props.only.length || currentOnly.length ? includes(currentOnly, key) : true
-      )
+      .filter(key => (currentOnly.length ? includes(currentOnly, key) : true))
       .filter(key => !includes(currentOmit, key))
       .map(key => {
         return (
@@ -56,15 +54,15 @@ export default class AutoFormField extends React.Component {
     }
 
     if (fieldType) {
-      props.type = this.props.getFieldComponent(field)
+      props.type = this.props.getFieldComponent(field, this.props.fieldName)
     } else if (isArray(type) && isPlainObject(type[0])) {
-      props.type = this.props.getFieldComponent({type: 'array'})
+      props.type = this.props.getFieldComponent({type: 'array'}, this.props.fieldName)
       props.children = this.renderObjectFields(type[0])
     } else if (isPlainObject(type)) {
-      props.type = this.props.getFieldComponent({type: 'plainObject'})
+      props.type = this.props.getFieldComponent({type: 'plainObject'}, this.props.fieldName)
       props.children = this.renderObjectFields(type)
     } else {
-      props.type = this.props.getFieldComponent(field)
+      props.type = this.props.getFieldComponent(field, this.props.fieldName)
     }
 
     return <Field {...props} />

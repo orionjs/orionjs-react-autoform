@@ -33,23 +33,31 @@ export default class Fields extends React.Component {
         : [this.props.only]
       : []
 
-    return Object.keys(params)
-      .filter(key => (only.length ? includes(only, key) : true))
-      .filter(key => !includes(omit, key))
-      .map(key => {
-        return (
-          <Param
-            key={key}
-            omit={omit}
-            only={only}
-            parent={this.props.parent}
-            field={params[key]}
-            fieldName={key}
-            getFieldComponent={this.props.getFieldComponent}
-            passProps={this.props.passProps}
-          />
-        )
+    const keys = Object.keys(params)
+      .filter(key => {
+        if (!only.length) return true
+        for (const onlyItem of only) {
+          if (onlyItem.startsWith(key)) return true
+        }
+
+        return false
       })
+      .filter(key => !includes(omit, key))
+
+    return keys.map(key => {
+      return (
+        <Param
+          key={key}
+          omit={omit}
+          only={only}
+          parent={this.props.parent}
+          field={params[key]}
+          fieldName={key}
+          getFieldComponent={this.props.getFieldComponent}
+          passProps={this.props.passProps}
+        />
+      )
+    })
   }
 
   render() {
