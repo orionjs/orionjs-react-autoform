@@ -20,6 +20,10 @@ export default class AutoFormField extends React.Component {
       .filter(key => key && key.startsWith(this.props.fieldName + '.'))
       .map(key => key.replace(this.props.fieldName + '.', ''))
 
+    const currentOnly = this.props.only
+      .filter(key => key && key.startsWith(this.props.fieldName + '.'))
+      .map(key => key.replace(this.props.fieldName + '.', ''))
+
     return Object.keys(fields)
       .filter(key => !includes(currentOmit, key))
       .map(key => {
@@ -31,6 +35,7 @@ export default class AutoFormField extends React.Component {
             getFieldComponent={this.props.getFieldComponent}
             passProps={this.props.passProps}
             omit={currentOmit}
+            only={currentOnly}
           />
         )
       })
