@@ -10,7 +10,7 @@ export default class AutoFormField extends React.Component {
     field: PropTypes.object,
     fieldName: PropTypes.string,
     getFieldComponent: PropTypes.func,
-    only: PropTypes.string,
+    only: PropTypes.array,
     passProps: PropTypes.object,
     omit: PropTypes.array
   }
@@ -20,7 +20,12 @@ export default class AutoFormField extends React.Component {
       .filter(key => key && key.startsWith(this.props.fieldName + '.'))
       .map(key => key.replace(this.props.fieldName + '.', ''))
 
+    const currentOnly = this.props.only
+      .filter(key => key && key.startsWith(this.props.fieldName + '.'))
+      .map(key => key.replace(this.props.fieldName + '.', ''))
+
     return Object.keys(fields)
+      .filter(key => (currentOnly.length ? includes(currentOnly, key) : true))
       .filter(key => !includes(currentOmit, key))
       .map(key => {
         return (
@@ -31,6 +36,7 @@ export default class AutoFormField extends React.Component {
             getFieldComponent={this.props.getFieldComponent}
             passProps={this.props.passProps}
             omit={currentOmit}
+            only={currentOnly}
           />
         )
       })
@@ -63,6 +69,6 @@ export default class AutoFormField extends React.Component {
   }
 
   render() {
-    return this.renderField(this.props.field, this.props.fieldName)
+    return this.renderField(this.props.field)
   }
 }
