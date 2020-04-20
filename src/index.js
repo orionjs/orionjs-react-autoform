@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import WithParams from './WithParams'
 import Form from './Form'
 import createGetFieldComponent from './createGetFieldComponent'
-import autobind from 'autobind-decorator'
 import Fields from './Fields'
 import WithMutation from './WithMutation'
 import getFragment from './getFragment'
 import {getValidationErrors, clean} from '@orion-js/schema'
+import debounce from 'lodash/debounce'
 
 export default passedOptions => {
   const defaultOptions = {
@@ -40,7 +40,10 @@ export default passedOptions => {
       getErrorText: PropTypes.func,
       getDefaultLabel: PropTypes.func,
       refetchQueries: PropTypes.array,
-      buttonRef: PropTypes.any
+      buttonRef: PropTypes.any,
+      autoSave: PropTypes.bool,
+      autoSaveDebounceTime: PropTypes.number,
+      useFormTag: PropTypes.bool
     }
 
     static defaultProps = {
@@ -53,12 +56,26 @@ export default passedOptions => {
       onValidationError: () => {},
       onError: options.onError,
       getErrorText: options.getErrorText,
-      getDefaultLabel: options.getDefaultLabel
+      getDefaultLabel: options.getDefaultLabel,
+      autoSaveDebounceTime: 500
     }
 
-    @autobind
-    submit() {
+    constructor(props) {
+      super(props)
+      this.debouncedSubmit = debounce(this.submit, props.autoSaveDebounceTime)
+    }
+
+    submit = () => {
       return this.form.submit()
+    }
+
+    onChange = newDoc => {
+      if (this.props.onChange) {
+        this.props.onChange(newDoc)
+      }
+      if (this.props.autoSave) {
+        this.debouncedSubmit()
+      }
     }
 
     renderChildren({params}) {
@@ -97,7 +114,8 @@ export default passedOptions => {
                   buttonRef={this.props.buttonRef}
                   doc={this.props.doc}
                   mutate={mutate}
-                  onChange={this.props.onChange}
+                  useFormTag={this.props.useFormTag}
+                  onChange={this.onChange}
                   params={params}
                   getDefaultLabel={this.props.getDefaultLabel}
                   schema={this.props.schema || params}

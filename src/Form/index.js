@@ -21,12 +21,14 @@ export default class AutoFormForm extends React.Component {
     onError: PropTypes.func,
     getErrorText: PropTypes.func,
     getDefaultLabel: PropTypes.func,
-    buttonRef: PropTypes.any
+    buttonRef: PropTypes.any,
+    useFormTag: PropTypes.bool
   }
 
   static defaultProps = {
     onChange: () => {},
-    getErrorFieldLabel: key => key
+    getErrorFieldLabel: key => key,
+    useFormTag: true
   }
 
   state = {}
@@ -156,6 +158,7 @@ export default class AutoFormForm extends React.Component {
         state={this.props.doc}
         errorMessages={this.getErrorMessages()}
         onChange={this.onChange}
+        useFormTag={this.props.useFormTag}
         onSubmit={this.onSubmit}>
         {this.props.children}
       </Form>

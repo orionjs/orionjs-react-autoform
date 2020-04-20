@@ -33,7 +33,7 @@
     "jest-cli": "^24.5.0",
     "less": "^3.9.0",
     "react": "^16.8.4",
-    "react-apollo": "^2.5.2",
+    "react-apollo": "^3.1.5",
     "react-dom": "^16.8.6",
     "simple-react-form": "^2.4.1"
   },
