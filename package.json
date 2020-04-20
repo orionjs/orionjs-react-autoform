@@ -1,6 +1,6 @@
 {
   "name": "orionjs-react-autoform",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "main": "index.js",
   "repository": "https://github.com/orionjs/orionjs-react-autoform",
   "author": "nicolaslopezj",
@@ -15,8 +15,8 @@
     "lint": "standard \"src/**/*.js\""
   },
   "devDependencies": {
-    "@orion-js/schema": "^0.18.8",
-    "apollo-client": "^2.6.4",
+    "@orion-js/schema": "^0.19.2",
+    "apollo-client": "^2.6.8",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
