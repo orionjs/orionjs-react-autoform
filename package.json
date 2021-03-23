@@ -1,6 +1,6 @@
 {
   "name": "orionjs-react-autoform",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "index.js",
   "repository": "https://github.com/orionjs/orionjs-react-autoform",
   "author": "nicolaslopezj",
@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@orion-js/schema": "^0.18.8",
-    "apollo-client": "^2.4.1",
+    "apollo-client": "^2.6.8",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.9.2",
     "react": "^16.4.2",
