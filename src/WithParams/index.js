@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import {Query} from 'react-apollo'
+import {Query} from '@apollo/client/react/components'
 
 const query = gql`
   query getParams($name: ID) {
@@ -17,12 +17,13 @@ export default class AutoFormWithSchema extends React.Component {
   static propTypes = {
     children: PropTypes.func,
     name: PropTypes.string,
-    loading: PropTypes.node
+    loading: PropTypes.node,
+    client: PropTypes.object
   }
 
   render() {
     return (
-      <Query query={query} variables={{name: this.props.name}}>
+      <Query query={query} variables={{name: this.props.name}} client={this.props.client}>
         {({loading, error, data}) => {
           if (data && data.params) {
             return this.props.children(data.params)

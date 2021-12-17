@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import {withApollo} from 'react-apollo'
+import {withApollo} from '@apollo/client/react/hoc'
 
 @withApollo
 export default class WithMutation extends React.Component {

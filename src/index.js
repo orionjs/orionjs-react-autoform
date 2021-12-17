@@ -43,7 +43,8 @@ export default passedOptions => {
       buttonRef: PropTypes.any,
       autoSave: PropTypes.bool,
       autoSaveDebounceTime: PropTypes.number,
-      useFormTag: PropTypes.bool
+      useFormTag: PropTypes.bool,
+      client: PropTypes.object
     }
 
     static defaultProps = {
@@ -100,8 +101,11 @@ export default passedOptions => {
     }
 
     render() {
+      const passedClient = options.getClient ? options.getClient() : undefined
+      const client = this.props.client ? this.props.client : passedClient
+
       return (
-        <WithParams name={this.props.mutation} loading={options.loading}>
+        <WithParams name={this.props.mutation} loading={options.loading} client={client}>
           {({name, result, basicResultQuery, params}) => (
             <WithMutation
               refetchQueries={this.props.refetchQueries}
