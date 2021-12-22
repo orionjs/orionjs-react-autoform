@@ -1,19 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import {withApollo} from '@apollo/client/react/hoc'
+import {ApolloClient} from '@apollo/client'
 
-@withApollo
-export default class WithMutation extends React.Component {
-  static propTypes = {
-    client: PropTypes.object,
-    children: PropTypes.func,
-    params: PropTypes.object,
-    mutation: PropTypes.string,
-    fragment: PropTypes.any,
-    refetchQueries: PropTypes.array
-  }
+export interface WithParamsProps {
+  client: ApolloClient<any>
+  children: (mutate: (variables: object) => Promise<any>) => React.ReactNode
+  params: object
+  mutation: string
+  fragment: any
+  refetchQueries: string[]
+}
 
+class WithMutation extends React.Component<WithParamsProps> {
   getArguments() {
     const keys = Object.keys(this.props.params)
     if (keys.length === 0) return ''
@@ -72,3 +71,5 @@ export default class WithMutation extends React.Component {
     return this.props.children(mutate)
   }
 }
+
+export default withApollo(WithMutation)
