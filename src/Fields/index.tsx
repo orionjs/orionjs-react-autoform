@@ -1,21 +1,25 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Param from './Param'
 import includes from 'lodash/includes'
 import isArray from 'lodash/isArray'
+import {SchemaNode} from '@orion-js/schema'
+import getFieldComponent from './getFieldComponent'
 
-export default class Fields extends React.Component {
-  static propTypes = {
-    params: PropTypes.object,
-    getFieldComponent: PropTypes.func,
-    parent: PropTypes.any,
-    omit: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    only: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
-    passProps: PropTypes.object
-  }
+export interface AutoFormFieldProps {
+  params: any
+  getField: (fieldType: string) => any
+  omit: string[] | string
+  only: string[] | string
+  passProps: any
+}
 
+export default class Fields extends React.Component<AutoFormFieldProps> {
   static defaultProps = {
     passProps: {}
+  }
+
+  getFieldComponent = (field: Partial<SchemaNode>) => {
+    return getFieldComponent(field, this.props.getField)
   }
 
   renderFields(params) {
@@ -50,10 +54,9 @@ export default class Fields extends React.Component {
           key={key}
           omit={omit}
           only={only}
-          parent={this.props.parent}
           field={params[key]}
           fieldName={key}
-          getFieldComponent={this.props.getFieldComponent}
+          getFieldComponent={this.getFieldComponent}
           passProps={this.props.passProps}
         />
       )
