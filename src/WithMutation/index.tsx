@@ -72,4 +72,4 @@ class WithMutation extends React.Component<WithParamsProps> {
   }
 }
 
-export default withApollo(WithMutation)
+export default withApollo<WithParamsProps>(WithMutation)

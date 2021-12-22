@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form, FormRef} from 'simple-react-form'
-import {CleanFunction, dotGetSchema, Schema, ValidateFunction} from '@orion-js/schema'
+import {CleanFunction, dotGetSchema, getValidationErrors, Schema} from '@orion-js/schema'
 
 export interface ButtonRef {
   setOnClick: (onClick: Function) => void
@@ -19,9 +19,9 @@ export interface AutoFormFormProps {
   onValidationError: (errors: object) => void
   schema: Schema
   clean: CleanFunction
-  validate: ValidateFunction
+  validate: typeof getValidationErrors
   onError: (error: any) => any
-  getErrorText: (errorCode: string, keySchema: string) => React.ReactNode
+  getErrorText: (errorCode: string, keySchema: string) => React.ReactNode | string
   getDefaultLabel: () => React.ReactNode | null
   buttonRef: {current?: ButtonRef}
   useFormTag: boolean
