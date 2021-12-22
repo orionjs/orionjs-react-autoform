@@ -1,20 +1,28 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 import {Field} from 'simple-react-form'
 import includes from 'lodash/includes'
 
-export default class AutoFormField extends React.Component {
-  static propTypes = {
-    field: PropTypes.object,
-    fieldName: PropTypes.string,
-    getFieldComponent: PropTypes.func,
-    only: PropTypes.array,
-    passProps: PropTypes.object,
-    omit: PropTypes.array
-  }
+// static propTypes = {
+//   field: PropTypes.object,
+//   fieldName: PropTypes.string,
+//   getFieldComponent: PropTypes.func,
+//   only: PropTypes.array,
+//   passProps: PropTypes.object,
+//   omit: PropTypes.array
+// }
 
+export interface AutoFormFieldProps {
+  field: any
+  fieldName: string
+  getFieldComponent: () => any
+  only: string[]
+  passProps: object
+  omit: string[]
+}
+
+export default class AutoFormField extends React.Component<AutoFormFieldProps> {
   renderObjectFields(fields) {
     const currentOmit = this.props.omit
       .filter(key => key && key.startsWith(this.props.fieldName + '.'))
