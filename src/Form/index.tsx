@@ -1,37 +1,56 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Form} from 'simple-react-form'
-import autobind from 'autobind-decorator'
-import {dotGetSchema} from '@orion-js/schema'
+import {Form, FormRef} from 'simple-react-form'
+import {CleanFunction, dotGetSchema, Schema, ValidateFunction} from '@orion-js/schema'
 
-export default class AutoFormForm extends React.Component {
-  static propTypes = {
-    params: PropTypes.object,
-    children: PropTypes.node,
-    doc: PropTypes.object,
-    onChange: PropTypes.func,
-    setRef: PropTypes.func,
-    mutate: PropTypes.func,
-    getErrorFieldLabel: PropTypes.func,
-    onSuccess: PropTypes.func,
-    onValidationError: PropTypes.func,
-    schema: PropTypes.object,
-    clean: PropTypes.func,
-    validate: PropTypes.func,
-    onError: PropTypes.func,
-    getErrorText: PropTypes.func,
-    getDefaultLabel: PropTypes.func,
-    buttonRef: PropTypes.any,
-    useFormTag: PropTypes.bool
-  }
+export interface ButtonRef {
+  setOnClick: (onClick: Function) => void
+  click: Function
+}
 
+export interface AutoFormFormProps {
+  params: any
+  children: React.ReactNode
+  doc: object
+  onChange: (doc: object) => any
+  setRef: (form: AutoFormForm) => void
+  mutate: (variables: object) => Promise<any>
+  getErrorFieldLabel: (key: string) => React.ReactNode
+  onSuccess: (result: object) => Promise<any> | any
+  onValidationError: (errors: object) => void
+  schema: Schema
+  clean: CleanFunction
+  validate: ValidateFunction
+  onError: (error: any) => any
+  getErrorText: (errorCode: string, keySchema: string) => React.ReactNode
+  getDefaultLabel: () => React.ReactNode | null
+  buttonRef: {current?: ButtonRef}
+  useFormTag: boolean
+}
+
+export interface AutoFormFormState {
+  validationErrors?: object
+  doc?: object
+}
+
+export default class AutoFormForm extends React.Component<AutoFormFormProps, AutoFormFormState> {
   static defaultProps = {
     onChange: () => {},
     getErrorFieldLabel: key => key,
     useFormTag: true
   }
 
-  state = {}
+  state: AutoFormFormState = {}
+  form: FormRef = null
+
+  // constructor with bind functions
+  constructor(props) {
+    super(props)
+    this.submit = this.submit.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.submitForm = this.submitForm.bind(this)
+    this.validate = this.validate.bind(this)
+    this.onChange = this.onChange.bind(this)
+  }
 
   componentDidMount() {
     this.setOnClick()
@@ -54,7 +73,6 @@ export default class AutoFormForm extends React.Component {
     }
   }
 
-  @autobind
   submit() {
     return this.submitForm()
   }
@@ -82,7 +100,6 @@ export default class AutoFormForm extends React.Component {
     }
   }
 
-  @autobind
   async onSubmit() {
     const ref = this.props.buttonRef
     if (ref && ref.current) {
@@ -92,9 +109,8 @@ export default class AutoFormForm extends React.Component {
     }
   }
 
-  @autobind
   async submitForm() {
-    const data = this.form.state.value
+    const data = this.form.getValue()
     try {
       const errors = await this.validate(data)
       if (errors) {
@@ -111,12 +127,11 @@ export default class AutoFormForm extends React.Component {
     }
   }
 
-  @autobind
-  async validate(doc) {
+  async validate(doc: object) {
     this.setState({validationErrors: null})
     try {
       const cleaned = await this.props.clean(this.props.schema, doc)
-      const validationErrors = await this.props.validate(this.props.schema, cleaned)
+      const validationErrors = (await this.props.validate(this.props.schema, cleaned)) as object
       this.setState({validationErrors, doc})
       if (validationErrors) {
         console.log('validationErrors:', validationErrors)
@@ -128,7 +143,6 @@ export default class AutoFormForm extends React.Component {
     }
   }
 
-  @autobind
   onChange(doc) {
     this.setState({doc})
     this.props.onChange(doc)
