@@ -1,7 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import {Query} from '@apollo/client/react/components'
+import {QueryResult} from '@apollo/client'
+
+export interface WithParamsProps {
+  children: (params: object) => JSX.Element | null
+  name: string
+  loading: JSX.Element
+  client: any
+}
 
 const query = gql`
   query getParams($name: ID) {
@@ -13,18 +20,12 @@ const query = gql`
     }
   }
 `
-export default class AutoFormWithSchema extends React.Component {
-  static propTypes = {
-    children: PropTypes.func,
-    name: PropTypes.string,
-    loading: PropTypes.node,
-    client: PropTypes.object
-  }
-
+export default class WithParams extends React.Component<WithParamsProps> {
   render() {
     return (
       <Query query={query} variables={{name: this.props.name}} client={this.props.client}>
-        {({loading, error, data}) => {
+        {(result: QueryResult<any, any>) => {
+          const {error, data} = result
           if (data && data.params) {
             return this.props.children(data.params)
           }
