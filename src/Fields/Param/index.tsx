@@ -3,27 +3,19 @@ import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 import {Field} from 'simple-react-form'
 import includes from 'lodash/includes'
-
-// static propTypes = {
-//   field: PropTypes.object,
-//   fieldName: PropTypes.string,
-//   getFieldComponent: PropTypes.func,
-//   only: PropTypes.array,
-//   passProps: PropTypes.object,
-//   omit: PropTypes.array
-// }
+import {SchemaNode} from '@orion-js/schema'
 
 export interface AutoFormFieldProps {
   field: any
   fieldName: string
-  getFieldComponent: () => any
+  getFieldComponent: (field: Partial<SchemaNode>) => any
   only: string[]
   passProps: object
   omit: string[]
 }
 
 export default class AutoFormField extends React.Component<AutoFormFieldProps> {
-  renderObjectFields(fields) {
+  renderObjectFields(fields: any) {
     const currentOmit = this.props.omit
       .filter(key => key && key.startsWith(this.props.fieldName + '.'))
       .map(key => key.replace(this.props.fieldName + '.', ''))
@@ -50,7 +42,7 @@ export default class AutoFormField extends React.Component<AutoFormFieldProps> {
       })
   }
 
-  renderField(field) {
+  renderField(field: SchemaNode) {
     const {type, label, placeholder, description, fieldType, fieldOptions = {}} = field
     const props = {
       label,
@@ -64,10 +56,10 @@ export default class AutoFormField extends React.Component<AutoFormFieldProps> {
     if (fieldType) {
       props.type = this.props.getFieldComponent(field)
     } else if (isArray(type) && isPlainObject(type[0])) {
-      props.type = this.props.getFieldComponent({type: 'array'})
+      props.type = this.props.getFieldComponent({fieldType: 'array'})
       props.children = this.renderObjectFields(type[0])
     } else if (isPlainObject(type)) {
-      props.type = this.props.getFieldComponent({type: 'plainObject'})
+      props.type = this.props.getFieldComponent({fieldType: 'plainObject'})
       props.children = this.renderObjectFields(type)
     } else {
       props.type = this.props.getFieldComponent(field)
