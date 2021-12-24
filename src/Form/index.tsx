@@ -25,6 +25,7 @@ export interface AutoFormFormProps {
   getDefaultLabel: () => React.ReactNode | null
   buttonRef: {current?: ButtonRef}
   useFormTag: boolean
+  className?: string
 }
 
 export interface AutoFormFormState {
@@ -173,7 +174,8 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
         errorMessages={this.getErrorMessages()}
         onChange={this.onChange}
         useFormTag={this.props.useFormTag}
-        onSubmit={this.onSubmit}>
+        onSubmit={this.onSubmit}
+        className={this.props.className}>
         {this.props.children}
       </Form>
     )

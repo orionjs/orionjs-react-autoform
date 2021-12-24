@@ -35,7 +35,8 @@ export interface AutoFormProps {
   buttonRef?: AutoFormFormProps['buttonRef']
   autoSave?: boolean
   autoSaveDebounceTime?: number
-  useFormTag?: boolean
+  useFormTag?: AutoFormFormProps['useFormTag']
+  className?: AutoFormFormProps['className']
   client?: any
 }
 
@@ -133,6 +134,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
                 doc={this.props.doc}
                 mutate={mutate}
                 useFormTag={this.props.useFormTag}
+                className={this.props.className}
                 onChange={this.onChange}
                 params={params}
                 getDefaultLabel={this.props.getDefaultLabel}
