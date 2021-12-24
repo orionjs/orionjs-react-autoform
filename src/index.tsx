@@ -68,9 +68,9 @@ export class AutoForm extends React.Component<AutoFormProps> {
     only: [],
     onSuccess: () => {},
     onValidationError: () => {},
-    onError: options.onError,
-    getErrorText: options.getErrorText,
-    getDefaultLabel: options.getDefaultLabel,
+    onError: error => options.onError(error),
+    getErrorText: (code, field) => options.getErrorText(code, field),
+    getDefaultLabel: () => options.getDefaultLabel(),
     autoSaveDebounceTime: 500
   }
 
@@ -157,9 +157,8 @@ export class AutoForm extends React.Component<AutoFormProps> {
 }
 
 export default function createAutoForm(passedOptions: CreateAutoFormOptions) {
-  options = {
-    ...options,
-    ...passedOptions
+  for (const key in passedOptions) {
+    options[key] = passedOptions[key]
   }
 
   return AutoForm
