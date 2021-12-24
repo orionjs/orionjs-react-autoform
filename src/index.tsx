@@ -18,7 +18,7 @@ export interface AutoFormProps {
   mutation: string
   doc?: object
   onChange?: (newDoc: object) => any
-  children?: (props: AutoFormChildrenProps) => React.ReactNode | React.ReactNode
+  children?: React.ReactNode | ((props: AutoFormChildrenProps) => React.ReactNode)
   fragment?: any
   getErrorFieldLabel?: AutoFormFormProps['getErrorFieldLabel']
   onSuccess?: AutoFormFormProps['onSuccess']
