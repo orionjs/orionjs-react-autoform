@@ -17,7 +17,7 @@ export interface AutoFormChildrenProps {
 export interface AutoFormProps {
   mutation: string
   doc?: object
-  onChange?: (newDoc: object) => any
+  onChange?: (newDoc: any) => any
   children?: React.ReactNode | ((props: AutoFormChildrenProps) => React.ReactNode)
   fragment?: any
   getErrorFieldLabel?: AutoFormFormProps['getErrorFieldLabel']
@@ -49,7 +49,7 @@ export interface CreateAutoFormOptions {
   getClient?: () => ApolloClient<any>
 }
 
-let options: CreateAutoFormOptions = {
+export const options: CreateAutoFormOptions = {
   getField: () => {
     throw new Error('You must pass a getField function')
   },
