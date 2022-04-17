@@ -8,9 +8,9 @@ import getFieldComponent from './getFieldComponent'
 export interface AutoFormFieldProps {
   params: any
   getField: (fieldType: string) => any
-  omit: string[] | string
-  only: string[] | string
-  passProps: any
+  omit?: string[] | string
+  only?: string[] | string
+  passProps?: any
 }
 
 export default class Fields extends React.Component<AutoFormFieldProps> {
