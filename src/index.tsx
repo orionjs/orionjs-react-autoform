@@ -123,6 +123,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
       <WithParams name={this.props.mutation} loading={options.loading} client={client}>
         {({name, result, basicResultQuery, params}) => (
           <WithMutation
+            client={client}
             refetchQueries={this.props.refetchQueries}
             params={params}
             fragment={this.getFragment({name, result, basicResultQuery, params})}

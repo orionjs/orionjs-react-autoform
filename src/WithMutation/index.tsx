@@ -1,6 +1,5 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import {withApollo} from '@apollo/client/react/hoc'
 import {ApolloClient} from '@apollo/client'
 
 export interface WithParamsProps {
@@ -12,7 +11,7 @@ export interface WithParamsProps {
   refetchQueries: string[]
 }
 
-class WithMutation extends React.Component<WithParamsProps> {
+export default class WithMutation extends React.Component<WithParamsProps> {
   getArguments() {
     const keys = Object.keys(this.props.params)
     if (keys.length === 0) return ''
@@ -71,5 +70,3 @@ class WithMutation extends React.Component<WithParamsProps> {
     return this.props.children(mutate)
   }
 }
-
-export default withApollo<WithParamsProps>(WithMutation)
