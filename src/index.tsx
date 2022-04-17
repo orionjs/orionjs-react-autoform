@@ -8,6 +8,8 @@ import {getValidationErrors, clean} from '@orion-js/schema'
 import debounce from 'lodash/debounce'
 import {ApolloClient} from '@apollo/client'
 
+export {Fields}
+
 export interface AutoFormChildrenProps {
   params: object
   omit: string[] | string
