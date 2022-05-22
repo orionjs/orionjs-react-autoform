@@ -1,6 +1,6 @@
 {
   "name": "orionjs-react-autoform",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -17,24 +17,25 @@
     "watch": "tsc -w"
   },
   "devDependencies": {
-    "@apollo/client": "^3.5.10",
-    "@types/lodash": "^4.14.181",
-    "@types/prop-types": "^15.7.4",
-    "@types/react": "^17.0.43",
-    "graphql": "^16.3.0",
+    "@apollo/client": "^3.6.4",
+    "@orion-js/schema": "^3.2.29",
+    "@types/lodash": "^4.14.182",
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.0.9",
+    "graphql": "^16.5.0",
     "react": "^17.0.0",
-    "simple-react-form": "3.0.7",
-    "typescript": "^4.6.3"
+    "simple-react-form": "3.0.10",
+    "typescript": "^4.6.4"
   },
   "peerDependencies": {
     "@apollo/client": "^3.5.0",
+    "@orion-js/schema": "^3.2.29",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.9.2",
     "react": ">=16.8.0",
     "simple-react-form": "*"
   },
   "dependencies": {
-    "@orion-js/schema": "^3.1.13",
     "lodash": "4.17.21"
   }
 }
