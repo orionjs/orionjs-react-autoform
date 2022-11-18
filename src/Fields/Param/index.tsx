@@ -3,14 +3,14 @@ import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
 import {Field} from 'simple-react-form'
 import includes from 'lodash/includes'
-import {SchemaNode} from '@orion-js/schema'
+import {Blackbox, SchemaNode} from '@orion-js/schema'
 
 export interface AutoFormFieldProps {
   field: any
   fieldName: string
   getFieldComponent: (field: Partial<SchemaNode>) => any
   only: string[]
-  passProps: object
+  passProps: Blackbox
   omit: string[]
 }
 

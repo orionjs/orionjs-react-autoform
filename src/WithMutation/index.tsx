@@ -1,11 +1,12 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import {ApolloClient} from '@apollo/client'
+import {Blackbox} from '@orion-js/schema'
 
 export interface WithParamsProps {
   client: ApolloClient<any>
-  children: (mutate: (variables: object) => Promise<any>) => React.ReactNode
-  params: object
+  children: (mutate: (variables: Blackbox) => Promise<any>) => React.ReactNode
+  params: Blackbox
   mutation: string
   fragment: any
   refetchQueries: string[]

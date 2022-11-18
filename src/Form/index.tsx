@@ -1,6 +1,6 @@
 import React from 'react'
 import {Form, FormRef} from 'simple-react-form'
-import {CleanFunction, dotGetSchema, getValidationErrors, Schema} from '@orion-js/schema'
+import {Blackbox, CleanFunction, dotGetSchema, getValidationErrors, Schema} from '@orion-js/schema'
 
 export interface ButtonRef {
   setOnClick: (onClick: Function) => void
@@ -10,13 +10,13 @@ export interface ButtonRef {
 export interface AutoFormFormProps {
   params: any
   children: React.ReactNode
-  doc: object
-  onChange: (doc: object) => any
+  doc: Blackbox
+  onChange: (doc: Blackbox) => any
   setRef: (form: AutoFormForm) => void
-  mutate: (variables: object) => Promise<any>
+  mutate: (variables: Blackbox) => Promise<any>
   getErrorFieldLabel: (key: string) => React.ReactNode
-  onSuccess: (result: object) => Promise<any> | any
-  onValidationError: (errors: object) => void
+  onSuccess: (result: Blackbox) => Promise<any> | any
+  onValidationError: (errors: Blackbox) => void
   schema: Schema
   clean: CleanFunction
   validate: typeof getValidationErrors
@@ -29,8 +29,8 @@ export interface AutoFormFormProps {
 }
 
 export interface AutoFormFormState {
-  validationErrors?: object
-  doc?: object
+  validationErrors?: Blackbox
+  doc?: Blackbox
 }
 
 export default class AutoFormForm extends React.Component<AutoFormFormProps, AutoFormFormState> {
@@ -128,11 +128,11 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
     }
   }
 
-  async validate(doc: object) {
+  async validate(doc: Blackbox) {
     this.setState({validationErrors: null})
     try {
       const cleaned = await this.props.clean(this.props.schema, doc)
-      const validationErrors = (await this.props.validate(this.props.schema, cleaned)) as object
+      const validationErrors = (await this.props.validate(this.props.schema, cleaned)) as Blackbox
       this.setState({validationErrors, doc})
       if (validationErrors) {
         console.log('validationErrors:', validationErrors)

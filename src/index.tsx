@@ -4,21 +4,21 @@ import Form, {AutoFormFormProps} from './Form'
 import Fields from './Fields'
 import WithMutation from './WithMutation'
 import getFragment from './getFragment'
-import {getValidationErrors, clean} from '@orion-js/schema'
+import {getValidationErrors, clean, Blackbox} from '@orion-js/schema'
 import debounce from 'lodash/debounce'
 import {ApolloClient} from '@apollo/client'
 
 export {Fields}
 
 export interface AutoFormChildrenProps {
-  params: object
+  params: Blackbox
   omit: string[] | string
   only: string[] | string
 }
 
 export interface AutoFormProps {
   mutation: string
-  doc?: object
+  doc?: Blackbox
   onChange?: (newDoc: any) => any
   children?: React.ReactNode | ((props: AutoFormChildrenProps) => React.ReactNode)
   fragment?: any
@@ -97,6 +97,10 @@ export class AutoForm extends React.Component<AutoFormProps> {
     }
   }
 
+  setDoc = newDoc => {
+    this.onChange(newDoc)
+  }
+
   renderChildren({params}) {
     if (typeof this.props.children === 'function') {
       return this.props.children({
@@ -120,6 +124,10 @@ export class AutoForm extends React.Component<AutoFormProps> {
   render() {
     const passedClient = options.getClient ? options.getClient() : undefined
     const client = this.props.client ? this.props.client : passedClient
+
+    if (!client) {
+      throw new Error('You must pass a client or pass a getClient function')
+    }
 
     return (
       <WithParams name={this.props.mutation} loading={options.loading} client={client}>
