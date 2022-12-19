@@ -13,7 +13,7 @@ export interface AutoFormFieldProps {
   passProps?: any
 }
 
-export default class Fields extends React.Component<AutoFormFieldProps> {
+export class Fields extends React.Component<AutoFormFieldProps> {
   static defaultProps = {
     passProps: {}
   }

@@ -6,7 +6,7 @@ import getFragment from './getFragment'
 import {getValidationErrors, clean, Blackbox} from '@orion-js/schema'
 import debounce from 'lodash/debounce'
 import {ApolloClient} from '@apollo/client'
-import Fields from './Fields'
+import {Fields} from './Fields'
 
 export interface AutoFormChildrenProps {
   params: Blackbox
