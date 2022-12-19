@@ -1,20 +1,28 @@
 {
   "name": "orionjs-react-autoform",
   "version": "2.0.9",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
-    "/lib"
+    "dist"
   ],
+  "main": "./dist/orionjs-react-autoform.umd.js",
+  "module": "./dist/orionjs-react-autoform.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/orionjs-react-autoform.es.js",
+      "require": "./dist/orionjs-react-autoform.umd.js"
+    }
+  },
   "repository": "https://github.com/orionjs/orionjs-react-autoform",
   "author": "nicolaslopezj",
   "license": "MIT",
   "scripts": {
     "test": "exit 0",
     "prepare": "yarn run build",
-    "clean": "rm -rf ./lib",
-    "build": "yarn run clean && tsc",
-    "watch": "tsc -w"
+    "clean": "rm -rf ./dist",
+    "dev": "watch -p './src/**/*.ts' -c 'yarn build'",
+    "build": "vite build && yarn emit-types",
+    "emit-types": "tsc"
   },
   "devDependencies": {
     "@apollo/client": "^3.6.4",
@@ -24,8 +32,10 @@
     "@types/react": "^18.0.9",
     "graphql": "^16.5.0",
     "react": "^17.0.0",
+    "rollup-plugin-visualizer": "^5.8.3",
     "simple-react-form": "3.0.10",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "vite": "^4.0.2"
   },
   "peerDependencies": {
     "@apollo/client": "^3.5.0",

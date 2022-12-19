@@ -38,3 +38,5 @@ jspm_packages
 
 # Compiled files
 lib
+dist
+stats.html
