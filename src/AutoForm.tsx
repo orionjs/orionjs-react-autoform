@@ -5,7 +5,7 @@ import WithMutation from './WithMutation'
 import getFragment from './getFragment'
 import {getValidationErrors, clean, Blackbox} from '@orion-js/schema'
 import debounce from 'lodash/debounce'
-import {ApolloClient} from '@apollo/client'
+import {ApolloClient, WatchQueryFetchPolicy} from '@apollo/client'
 import {Fields} from './Fields'
 
 export interface AutoFormChildrenProps {
@@ -15,10 +15,19 @@ export interface AutoFormChildrenProps {
 }
 
 export interface AutoFormProps {
+  /**
+   * Name of the mutation
+   */
   mutation: string
+  /**
+   * The initial document
+   */
   doc?: Blackbox
   onChange?: (newDoc: any) => any
   children?: React.ReactNode | ((props: AutoFormChildrenProps) => React.ReactNode)
+  /**
+   * Custom fragment to use in the mutation
+   */
   fragment?: any
   getErrorFieldLabel?: AutoFormFormProps['getErrorFieldLabel']
   onSuccess?: AutoFormFormProps['onSuccess']
@@ -38,6 +47,10 @@ export interface AutoFormProps {
   useFormTag?: AutoFormFormProps['useFormTag']
   className?: AutoFormFormProps['className']
   client?: any
+  /**
+   * The fetch policy to use for the getParams query. Defaults to 'cache-first'.
+   */
+  fetchPolicy?: WatchQueryFetchPolicy
 }
 
 export interface CreateAutoFormOptions {
@@ -45,6 +58,7 @@ export interface CreateAutoFormOptions {
   onError: (error: any) => any
   getErrorText: AutoFormFormProps['getErrorText']
   loading: JSX.Element
+  defaultFetchPolicy?: WatchQueryFetchPolicy
   getDefaultLabel: () => string
   getClient?: () => ApolloClient<any>
 }
@@ -56,6 +70,7 @@ export const options: CreateAutoFormOptions = {
   onError: error => alert(error.message),
   getErrorText: (code, field) => code,
   loading: null,
+  defaultFetchPolicy: 'cache-first',
   getDefaultLabel: () => 'This field'
 }
 
@@ -71,7 +86,8 @@ export class AutoForm extends React.Component<AutoFormProps> {
     onError: error => options.onError(error),
     getErrorText: (code, field) => options.getErrorText(code, field),
     getDefaultLabel: () => options.getDefaultLabel(),
-    autoSaveDebounceTime: 500
+    autoSaveDebounceTime: 500,
+    fetchPolicy: options.defaultFetchPolicy
   }
 
   form: Form = null
@@ -128,7 +144,11 @@ export class AutoForm extends React.Component<AutoFormProps> {
     }
 
     return (
-      <WithParams name={this.props.mutation} loading={options.loading} client={client}>
+      <WithParams
+        fetchPolicy={this.props.fetchPolicy}
+        name={this.props.mutation}
+        loading={options.loading}
+        client={client}>
         {({name, result, basicResultQuery, params}) => (
           <WithMutation
             client={client}

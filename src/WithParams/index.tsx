@@ -1,7 +1,7 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import {Query} from '@apollo/client/react/components'
-import {QueryResult} from '@apollo/client'
+import {QueryResult, WatchQueryFetchPolicy} from '@apollo/client'
 import {Schema} from '@orion-js/schema'
 
 export interface WithParamsParams {
@@ -16,6 +16,7 @@ export interface WithParamsProps {
   name: string
   loading: JSX.Element
   client: any
+  fetchPolicy: WatchQueryFetchPolicy
 }
 
 const query = gql`
@@ -31,7 +32,11 @@ const query = gql`
 export default class WithParams extends React.Component<WithParamsProps> {
   render() {
     return (
-      <Query query={query} variables={{name: this.props.name}} client={this.props.client}>
+      <Query
+        fetchPolicy={this.props.fetchPolicy}
+        query={query}
+        variables={{name: this.props.name}}
+        client={this.props.client}>
         {(result: QueryResult<{params: WithParamsParams}, any>) => {
           const {error, data} = result
           if (data && data.params) {
