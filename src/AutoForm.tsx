@@ -86,8 +86,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
     onError: error => options.onError(error),
     getErrorText: (code, field) => options.getErrorText(code, field),
     getDefaultLabel: () => options.getDefaultLabel(),
-    autoSaveDebounceTime: 500,
-    fetchPolicy: options.defaultFetchPolicy
+    autoSaveDebounceTime: 500
   }
 
   form: Form = null
@@ -145,7 +144,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
 
     return (
       <WithParams
-        fetchPolicy={this.props.fetchPolicy}
+        fetchPolicy={this.props.fetchPolicy || options.defaultFetchPolicy}
         name={this.props.mutation}
         loading={options.loading}
         client={client}>
