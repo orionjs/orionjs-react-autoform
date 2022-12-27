@@ -7,6 +7,7 @@ import {getValidationErrors, clean, Blackbox} from '@orion-js/schema'
 import debounce from 'lodash/debounce'
 import {ApolloClient, WatchQueryFetchPolicy} from '@apollo/client'
 import {Fields} from './Fields'
+import {WithFormId} from './Form/WithFormId'
 
 export interface AutoFormChildrenProps {
   params: Blackbox
@@ -51,6 +52,10 @@ export interface AutoFormProps {
    * The fetch policy to use for the getParams query. Defaults to 'cache-first'.
    */
   fetchPolicy?: WatchQueryFetchPolicy
+  /**
+   * The id of the form. If not provided, a random id will be generated.
+   */
+  formId?: AutoFormFormProps['formId']
 }
 
 export interface CreateAutoFormOptions {
@@ -156,26 +161,31 @@ export class AutoForm extends React.Component<AutoFormProps> {
             fragment={this.getFragment({name, result, basicResultQuery, params})}
             mutation={this.props.mutation}>
             {(mutate: AutoFormFormProps['mutate']) => (
-              <Form
-                setRef={form => (this.form = form)}
-                buttonRef={this.props.buttonRef}
-                doc={this.props.doc}
-                mutate={mutate}
-                useFormTag={this.props.useFormTag}
-                className={this.props.className}
-                onChange={this.onChange}
-                params={params}
-                getDefaultLabel={this.props.getDefaultLabel}
-                schema={this.props.schema || params}
-                onSuccess={this.props.onSuccess}
-                onError={this.props.onError}
-                getErrorFieldLabel={this.props.getErrorFieldLabel}
-                onValidationError={this.props.onValidationError}
-                clean={this.props.clean}
-                getErrorText={this.props.getErrorText}
-                validate={this.props.validate}>
-                {this.renderChildren({params: this.props.schema || params})}
-              </Form>
+              <WithFormId formId={this.props.formId}>
+                {formId => (
+                  <Form
+                    setRef={form => (this.form = form)}
+                    buttonRef={this.props.buttonRef}
+                    doc={this.props.doc}
+                    mutate={mutate}
+                    useFormTag={this.props.useFormTag}
+                    className={this.props.className}
+                    onChange={this.onChange}
+                    params={params}
+                    getDefaultLabel={this.props.getDefaultLabel}
+                    schema={this.props.schema || params}
+                    onSuccess={this.props.onSuccess}
+                    onError={this.props.onError}
+                    getErrorFieldLabel={this.props.getErrorFieldLabel}
+                    onValidationError={this.props.onValidationError}
+                    clean={this.props.clean}
+                    getErrorText={this.props.getErrorText}
+                    validate={this.props.validate}
+                    formId={formId}>
+                    {this.renderChildren({params: this.props.schema || params})}
+                  </Form>
+                )}
+              </WithFormId>
             )}
           </WithMutation>
         )}

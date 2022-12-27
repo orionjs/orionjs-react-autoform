@@ -4,6 +4,7 @@ import {Blackbox, CleanFunction, dotGetSchema, getValidationErrors, Schema} from
 
 export interface ButtonRef {
   setOnClick: (onClick: Function) => void
+  setFormId?: (formId: string) => void
   click: Function
 }
 
@@ -26,6 +27,7 @@ export interface AutoFormFormProps {
   buttonRef: {current?: ButtonRef}
   useFormTag: boolean
   className?: string
+  formId: string
 }
 
 export interface AutoFormFormState {
@@ -54,16 +56,19 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
   }
 
   componentDidMount() {
-    this.setOnClick()
+    this.setupButton()
     // set on click the bad way
-    setTimeout(this.setOnClick, 10)
-    setTimeout(this.setOnClick, 100)
+    setTimeout(this.setupButton, 10)
+    setTimeout(this.setupButton, 100)
   }
 
-  setOnClick = () => {
+  setupButton = () => {
     const ref = this.props.buttonRef
     if (ref && ref.current) {
       ref.current.setOnClick(this.submit)
+      if (ref.current.setFormId) {
+        ref.current.setFormId(this.props.formId)
+      }
     }
   }
 
@@ -71,6 +76,9 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
     const ref = this.props.buttonRef
     if (ref && ref.current) {
       ref.current.setOnClick(null)
+      if (ref.current.setFormId) {
+        ref.current.setFormId(null)
+      }
     }
   }
 
@@ -169,6 +177,7 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
 
     return (
       <Form
+        id={this.props.formId}
         ref={form => (this.form = form)}
         state={this.props.doc}
         errorMessages={this.getErrorMessages()}
