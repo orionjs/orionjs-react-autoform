@@ -2,14 +2,13 @@ import React from 'react'
 import gql from 'graphql-tag'
 import {Query} from '@apollo/client/react/components'
 import {QueryResult, WatchQueryFetchPolicy} from '@apollo/client'
-import {Schema} from '@orion-js/schema'
 import {ParamsContext} from './Context'
 
 export interface WithParamsParams {
   name: string
   result: any
   basicResultQuery: string
-  params: Schema
+  params: any
 }
 
 export interface WithParamsProps {
