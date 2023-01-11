@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import {Query} from '@apollo/client/react/components'
 import {QueryResult, WatchQueryFetchPolicy} from '@apollo/client'
 import {Schema} from '@orion-js/schema'
+import {ParamsContext} from './Context'
 
 export interface WithParamsParams {
   name: string
@@ -40,7 +41,11 @@ export default class WithParams extends React.Component<WithParamsProps> {
         {(result: QueryResult<{params: WithParamsParams}, any>) => {
           const {error, data} = result
           if (data && data.params) {
-            return this.props.children(data.params)
+            return (
+              <ParamsContext.Provider value={data.params}>
+                {this.props.children(data.params)}
+              </ParamsContext.Provider>
+            )
           }
 
           if (error) {
