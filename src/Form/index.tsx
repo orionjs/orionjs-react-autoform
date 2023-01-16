@@ -89,7 +89,14 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
   handleError(error, doc) {
     if (error.graphQLErrors) {
       for (const graphQLError of error.graphQLErrors) {
-        if (graphQLError.validationErrors) {
+        if (graphQLError.extensions?.isValidationError) {
+          // the new way
+          const validationErrors = graphQLError.extensions.info.validationErrors
+          console.log('Validation errors', validationErrors)
+          this.setState({validationErrors, doc})
+          this.props.onValidationError(validationErrors)
+        } else if (graphQLError.validationErrors) {
+          // the old way
           console.log('Validation errors', graphQLError.validationErrors)
           this.setState({validationErrors: graphQLError.validationErrors, doc})
           this.props.onValidationError(graphQLError.validationErrors)
