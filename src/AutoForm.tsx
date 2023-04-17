@@ -48,6 +48,7 @@ export interface AutoFormProps {
   useFormTag?: AutoFormFormProps['useFormTag']
   className?: AutoFormFormProps['className']
   client?: any
+  resetOnSubmit?: boolean
   /**
    * The fetch policy to use for the getParams query. Defaults to 'cache-first'.
    */
@@ -96,6 +97,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
 
   form: Form = null
   debouncedSubmit: Function = null
+  state = {formKey: 0}
 
   constructor(props) {
     super(props)
@@ -104,6 +106,19 @@ export class AutoForm extends React.Component<AutoFormProps> {
 
   submit = () => {
     return this.form.submit()
+  }
+
+  reset = () => {
+    this.setState({formKey: this.state.formKey + 1})
+  }
+
+  onSuccess = async (result: Blackbox) => {
+    if (this.props.onSuccess) {
+      await this.props.onSuccess(result)
+    }
+    if (this.props.resetOnSubmit) {
+      this.reset()
+    }
   }
 
   onChange = newDoc => {
@@ -164,6 +179,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
               <WithFormId formId={this.props.formId}>
                 {formId => (
                   <Form
+                    key={this.state.formKey}
                     setRef={form => (this.form = form)}
                     buttonRef={this.props.buttonRef}
                     doc={this.props.doc}
@@ -174,7 +190,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
                     params={params}
                     getDefaultLabel={this.props.getDefaultLabel}
                     schema={this.props.schema || params}
-                    onSuccess={this.props.onSuccess}
+                    onSuccess={this.onSuccess}
                     onError={this.props.onError}
                     getErrorFieldLabel={this.props.getErrorFieldLabel}
                     onValidationError={this.props.onValidationError}
