@@ -97,7 +97,6 @@ export class AutoForm extends React.Component<AutoFormProps> {
 
   form: Form = null
   debouncedSubmit: Function = null
-  state = {formKey: 0}
 
   constructor(props) {
     super(props)
@@ -109,7 +108,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
   }
 
   reset = () => {
-    this.setState({formKey: this.state.formKey + 1})
+    this.form.form.reset()
   }
 
   onSuccess = async (result: Blackbox) => {
@@ -179,7 +178,6 @@ export class AutoForm extends React.Component<AutoFormProps> {
               <WithFormId formId={this.props.formId}>
                 {formId => (
                   <Form
-                    key={this.state.formKey}
                     setRef={form => (this.form = form)}
                     buttonRef={this.props.buttonRef}
                     doc={this.props.doc}
