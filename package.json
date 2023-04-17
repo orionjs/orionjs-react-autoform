@@ -38,11 +38,11 @@
     "vite": "^4.2.1"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.5.0",
-    "@orion-js/schema": "^3.2.29",
-    "graphql": "^14.1.1",
-    "graphql-tag": "^2.9.2",
-    "react": ">=16.8.0",
+    "@apollo/client": "*",
+    "@orion-js/schema": "*",
+    "graphql": "*",
+    "graphql-tag": "*",
+    "react": "*",
     "simple-react-form": "*"
   },
   "dependencies": {
