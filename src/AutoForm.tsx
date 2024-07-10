@@ -8,6 +8,8 @@ import debounce from 'lodash/debounce'
 import {ApolloClient, WatchQueryFetchPolicy} from '@apollo/client'
 import {Fields} from './Fields'
 import {WithFormId} from './Form/WithFormId'
+import gql from 'graphql-tag'
+import {print as printGraphQL} from 'graphql'
 
 export interface AutoFormChildrenProps {
   params: Blackbox
@@ -74,10 +76,10 @@ export const options: CreateAutoFormOptions = {
     throw new Error('You must pass a getField function')
   },
   onError: error => alert(error.message),
-  getErrorText: (code, field) => code,
+  getErrorText: (code, _field) => code,
   loading: null,
   defaultFetchPolicy: 'cache-first',
-  getDefaultLabel: () => 'This field'
+  getDefaultLabel: () => 'This field',
 }
 
 export class AutoForm extends React.Component<AutoFormProps> {
@@ -92,7 +94,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
     onError: error => options.onError(error),
     getErrorText: (code, field) => options.getErrorText(code, field),
     getDefaultLabel: () => options.getDefaultLabel(),
-    autoSaveDebounceTime: 500
+    autoSaveDebounceTime: 500,
   }
 
   form: Form = null
@@ -138,19 +140,20 @@ export class AutoForm extends React.Component<AutoFormProps> {
       return this.props.children({
         params,
         omit: this.props.omit,
-        only: this.props.only
+        only: this.props.only,
       })
-    } else {
-      return this.props.children
     }
+    return this.props.children
   }
 
   getFragment({name, result, basicResultQuery, params}) {
     if (this.props.fragment) {
-      return this.props.fragment
-    } else {
-      return getFragment({name, result, basicResultQuery, params})
+      if (this.props.fragment.loc) {
+        return this.props.fragment
+      }
+      return gql`${printGraphQL(this.props.fragment)}`
     }
+    return getFragment({name, result, basicResultQuery, params})
   }
 
   render() {
@@ -166,19 +169,23 @@ export class AutoForm extends React.Component<AutoFormProps> {
         fetchPolicy={this.props.fetchPolicy || options.defaultFetchPolicy}
         name={this.props.mutation}
         loading={options.loading}
-        client={client}>
+        client={client}
+      >
         {({name, result, basicResultQuery, params}) => (
           <WithMutation
             client={client}
             refetchQueries={this.props.refetchQueries}
             params={params}
             fragment={this.getFragment({name, result, basicResultQuery, params})}
-            mutation={this.props.mutation}>
+            mutation={this.props.mutation}
+          >
             {(mutate: AutoFormFormProps['mutate']) => (
               <WithFormId formId={this.props.formId}>
                 {formId => (
                   <Form
-                    setRef={form => (this.form = form)}
+                    setRef={form => {
+                      this.form = form
+                    }}
                     buttonRef={this.props.buttonRef}
                     doc={this.props.doc}
                     mutate={mutate}
@@ -195,7 +202,8 @@ export class AutoForm extends React.Component<AutoFormProps> {
                     clean={this.props.clean}
                     getErrorText={this.props.getErrorText}
                     validate={this.props.validate}
-                    formId={formId}>
+                    formId={formId}
+                  >
                     {this.renderChildren({params: this.props.schema || params})}
                   </Form>
                 )}
