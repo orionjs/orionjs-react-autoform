@@ -1,13 +1,12 @@
-const path = require('path')
-const {defineConfig} = require('vite')
-const {visualizer} = require('rollup-plugin-visualizer')
+import {defineConfig} from 'vite'
+import dts from 'vite-plugin-dts'
 
-module.exports = defineConfig({
+export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.tsx'),
+      entry: 'src/index.tsx',
       name: 'orionjs-react-autoform',
-      fileName: format => `orionjs-react-autoform.${format}.js`
+      fileName: format => `orionjs-react-autoform.${format}.js`,
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -17,10 +16,14 @@ module.exports = defineConfig({
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          react: 'React'
-        }
-      }
-    }
+          react: 'React',
+        },
+      },
+    },
   },
-  plugins: [visualizer()]
+  plugins: [
+    dts({
+      rollupTypes: true,
+    }),
+  ],
 })

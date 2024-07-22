@@ -1,15 +1,15 @@
-import React from 'react'
-import WithParams from './WithParams'
-import Form, {AutoFormFormProps} from './Form'
-import WithMutation from './WithMutation'
-import getFragment from './getFragment'
-import {getValidationErrors, clean, Blackbox} from '@orion-js/schema'
-import debounce from 'lodash/debounce'
 import {ApolloClient, WatchQueryFetchPolicy} from '@apollo/client'
-import {Fields} from './Fields'
-import {WithFormId} from './Form/WithFormId'
-import gql from 'graphql-tag'
+import {Blackbox, clean, getValidationErrors} from '@orion-js/schema'
 import {print as printGraphQL} from 'graphql'
+import gql from 'graphql-tag'
+import debounce from 'lodash/debounce'
+import React from 'react'
+import {Fields} from './Fields'
+import Form, {AutoFormFormProps} from './Form'
+import {WithFormId} from './Form/WithFormId'
+import WithMutation from './WithMutation'
+import WithParams from './WithParams'
+import getFragment from './getFragment'
 
 export interface AutoFormChildrenProps {
   params: Blackbox
@@ -59,6 +59,11 @@ export interface AutoFormProps {
    * The id of the form. If not provided, a random id will be generated.
    */
   formId?: AutoFormFormProps['formId']
+
+  /**
+   * Extends the fields object with custom fields for only this form.
+   */
+  extendFields?: Record<string, any>
 }
 
 export interface CreateAutoFormOptions {

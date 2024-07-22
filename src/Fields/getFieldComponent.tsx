@@ -2,13 +2,20 @@ import {SchemaNode} from '@orion-js/schema'
 import isArray from 'lodash/isArray'
 import {options} from '..'
 
-export default (field: Partial<SchemaNode>, getField?: (fieldType: string) => any) => {
-  const finalGetField = function (key: string) {
+export default (
+  field: Partial<SchemaNode>,
+  getField?: (fieldType: string) => any,
+  extendFields?: Record<string, any>,
+) => {
+  const finalGetField = (key: string) => {
+    if (extendFields?.[key]) {
+      return extendFields[key]
+    }
     if (!getField) {
       getField = options.getField
     }
     const field = getField(key)
-    if (!field) throw new Error('No field component for type: ' + key)
+    if (!field) throw new Error(`No field component for type: ${key}`)
     return field
   }
 

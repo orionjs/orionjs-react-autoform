@@ -5,12 +5,14 @@
   "files": [
     "dist"
   ],
+  "type": "module",
   "main": "./dist/orionjs-react-autoform.umd.js",
   "module": "./dist/orionjs-react-autoform.es.js",
   "exports": {
     ".": {
       "import": "./dist/orionjs-react-autoform.es.js",
-      "require": "./dist/orionjs-react-autoform.umd.js"
+      "require": "./dist/orionjs-react-autoform.umd.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "repository": "https://github.com/orionjs/orionjs-react-autoform",
@@ -25,17 +27,19 @@
     "emit-types": "tsc"
   },
   "devDependencies": {
-    "@apollo/client": "^3.7.12",
-    "@orion-js/schema": "^3.3.20",
-    "@types/lodash": "^4.14.194",
-    "@types/prop-types": "^15.7.5",
-    "@types/react": "^18.0.35",
-    "graphql": "^16.6.0",
-    "react": "^18.2.0",
-    "rollup-plugin-visualizer": "^5.9.0",
-    "simple-react-form": "4.0.1",
-    "typescript": "^5.0.4",
-    "vite": "^4.2.1"
+    "@apollo/client": "^3.10.8",
+    "@biomejs/biome": "^1.8.3",
+    "@orion-js/schema": "^3.9.0",
+    "@types/graphql": "^14.5.0",
+    "@types/lodash": "^4.17.7",
+    "@types/react": "^18.3.3",
+    "graphql": "^16.9.0",
+    "react": "^18.3.1",
+    "simple-react-form": "^4.1.6",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.4",
+    "vite-plugin-dts": "^3.9.1",
+    "watch-cli": "^0.2.3"
   },
   "peerDependencies": {
     "@apollo/client": "*",

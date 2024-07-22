@@ -1,13 +1,14 @@
-import React from 'react'
-import Param from './Param'
+import {SchemaNode} from '@orion-js/schema'
 import includes from 'lodash/includes'
 import isArray from 'lodash/isArray'
-import {SchemaNode} from '@orion-js/schema'
+import React from 'react'
+import Param from './Param'
 import getFieldComponent from './getFieldComponent'
 
 export interface AutoFormFieldProps {
   params: any
   getField: (fieldType: string) => any
+  extendFields?: Record<string, any>
   omit?: string[] | string
   only?: string[] | string
   passProps?: any
@@ -15,11 +16,11 @@ export interface AutoFormFieldProps {
 
 export class Fields extends React.Component<AutoFormFieldProps> {
   static defaultProps = {
-    passProps: {}
+    passProps: {},
   }
 
   getFieldComponent = (field: Partial<SchemaNode>) => {
-    return getFieldComponent(field, this.props.getField)
+    return getFieldComponent(field, this.props.getField, this.props.extendFields)
   }
 
   renderFields(params) {
@@ -57,6 +58,7 @@ export class Fields extends React.Component<AutoFormFieldProps> {
           field={params[key]}
           fieldName={key}
           getFieldComponent={this.getFieldComponent}
+          extendFields={this.props.extendFields}
           passProps={this.props.passProps}
         />
       )

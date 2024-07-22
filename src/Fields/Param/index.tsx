@@ -1,14 +1,15 @@
-import React from 'react'
+import {Blackbox, SchemaNode} from '@orion-js/schema'
+import includes from 'lodash/includes'
 import isArray from 'lodash/isArray'
 import isPlainObject from 'lodash/isPlainObject'
+import React from 'react'
 import {Field} from 'simple-react-form'
-import includes from 'lodash/includes'
-import {Blackbox, SchemaNode} from '@orion-js/schema'
 
 export interface AutoFormFieldProps {
   field: any
   fieldName: string
   getFieldComponent: (field: Partial<SchemaNode>) => any
+  extendFields?: Record<string, any>
   only: string[]
   passProps: Blackbox
   omit: string[]
@@ -17,12 +18,12 @@ export interface AutoFormFieldProps {
 export default class AutoFormField extends React.Component<AutoFormFieldProps> {
   renderObjectFields(fields: any) {
     const currentOmit = this.props.omit
-      .filter(key => key && key.startsWith(this.props.fieldName + '.'))
-      .map(key => key.replace(this.props.fieldName + '.', ''))
+      .filter(key => key?.startsWith(`${this.props.fieldName}.`))
+      .map(key => key.replace(`${this.props.fieldName}.`, ''))
 
     const currentOnly = this.props.only
-      .filter(key => key && key.startsWith(this.props.fieldName + '.'))
-      .map(key => key.replace(this.props.fieldName + '.', ''))
+      .filter(key => key?.startsWith(`${this.props.fieldName}.`))
+      .map(key => key.replace(`${this.props.fieldName}.`, ''))
 
     return Object.keys(fields)
       .filter(key => (currentOnly.length ? includes(currentOnly, key) : true))
@@ -34,6 +35,7 @@ export default class AutoFormField extends React.Component<AutoFormFieldProps> {
             field={fields[key]}
             fieldName={key}
             getFieldComponent={this.props.getFieldComponent}
+            extendFields={this.props.extendFields}
             passProps={this.props.passProps}
             omit={currentOmit}
             only={currentOnly}
@@ -50,7 +52,7 @@ export default class AutoFormField extends React.Component<AutoFormFieldProps> {
       description,
       ...fieldOptions,
       ...this.props.passProps,
-      fieldName: this.props.fieldName
+      fieldName: this.props.fieldName,
     }
 
     if (fieldType) {
