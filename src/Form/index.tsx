@@ -1,6 +1,6 @@
+import {Blackbox, CleanFunction, Schema, dotGetSchema, getValidationErrors} from '@orion-js/schema'
 import React from 'react'
 import {Form, FormRef} from 'simple-react-form'
-import {Blackbox, CleanFunction, dotGetSchema, getValidationErrors, Schema} from '@orion-js/schema'
 
 export interface ButtonRef {
   setOnClick: (onClick: Function) => void
@@ -39,7 +39,7 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
   static defaultProps = {
     onChange: () => {},
     getErrorFieldLabel: key => key,
-    useFormTag: true
+    useFormTag: true,
   }
 
   state: AutoFormFormState = {}
@@ -64,7 +64,7 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
 
   setupButton = () => {
     const ref = this.props.buttonRef
-    if (ref && ref.current) {
+    if (ref?.current) {
       ref.current.setOnClick(this.submit)
       if (ref.current.setFormId) {
         ref.current.setFormId(this.props.formId)
@@ -74,7 +74,7 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
 
   componentWillUnmount() {
     const ref = this.props.buttonRef
-    if (ref && ref.current) {
+    if (ref?.current) {
       ref.current.setOnClick(null)
       if (ref.current.setFormId) {
         ref.current.setFormId(null)
@@ -118,11 +118,10 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
 
   async onSubmit() {
     const ref = this.props.buttonRef
-    if (ref && ref.current) {
+    if (ref?.current) {
       return ref.current.click()
-    } else {
-      return this.submit()
     }
+    return this.submit()
   }
 
   async submitForm() {
@@ -131,12 +130,11 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
       const errors = await this.validate(data)
       if (errors) {
         return {error: new Error('validationError'), result: null}
-      } else {
-        const cleaned = await this.props.clean(this.props.schema, data)
-        const result = await this.props.mutate(cleaned)
-        const mutationResult = await this.props.onSuccess(result)
-        return {error: null, result: mutationResult}
       }
+      const cleaned = await this.props.clean(this.props.schema, data)
+      const result = await this.props.mutate(cleaned)
+      const mutationResult = await this.props.onSuccess(result)
+      return {error: null, result: mutationResult}
     } catch (error) {
       this.handleError(error, data)
       return {error, result: null}
@@ -185,13 +183,16 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
     return (
       <Form
         id={this.props.formId}
-        ref={form => (this.form = form)}
+        ref={form => {
+          this.form = form
+        }}
         state={this.props.doc}
         errorMessages={this.getErrorMessages()}
         onChange={this.onChange}
         useFormTag={this.props.useFormTag}
         onSubmit={this.onSubmit}
-        className={this.props.className}>
+        className={this.props.className}
+      >
         {this.props.children}
       </Form>
     )

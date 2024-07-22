@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import uniqueId from 'lodash/uniqueId'
 
-export default function({name, result, basicResultQuery, params}) {
+export default function ({name, result, basicResultQuery}) {
   if (basicResultQuery === '') return
   const fragmentName = `${name}_${uniqueId()}`
   const text = `fragment ${fragmentName} on ${result} ${basicResultQuery}`

@@ -1,7 +1,7 @@
-import React from 'react'
-import gql from 'graphql-tag'
-import {Query} from '@apollo/client/react/components'
 import {QueryResult, WatchQueryFetchPolicy} from '@apollo/client'
+import {Query} from '@apollo/client/react/components'
+import gql from 'graphql-tag'
+import React from 'react'
 import {ParamsContext} from './Context'
 
 export interface WithParamsParams {
@@ -36,10 +36,11 @@ export default class WithParams extends React.Component<WithParamsProps> {
         fetchPolicy={this.props.fetchPolicy}
         query={query}
         variables={{name: this.props.name}}
-        client={this.props.client}>
+        client={this.props.client}
+      >
         {(result: QueryResult<{params: WithParamsParams}, any>) => {
           const {error, data} = result
-          if (data && data.params) {
+          if (data?.params) {
             return (
               <ParamsContext.Provider value={data.params}>
                 {this.props.children(data.params)}

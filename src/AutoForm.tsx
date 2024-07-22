@@ -15,6 +15,7 @@ export interface AutoFormChildrenProps {
   params: Blackbox
   omit: string[] | string
   only: string[] | string
+  extendFields?: Record<string, any>
 }
 
 export interface AutoFormProps {
@@ -89,7 +90,9 @@ export const options: CreateAutoFormOptions = {
 
 export class AutoForm extends React.Component<AutoFormProps> {
   static defaultProps: Partial<AutoFormProps> = {
-    children: props => <Fields getField={options.getField} {...props} />,
+    children: props => (
+      <Fields getField={options.getField} extendFields={props.extendFields || {}} {...props} />
+    ),
     clean: clean,
     validate: getValidationErrors,
     omit: [],
@@ -146,19 +149,20 @@ export class AutoForm extends React.Component<AutoFormProps> {
         params,
         omit: this.props.omit,
         only: this.props.only,
+        extendFields: this.props.extendFields,
       })
     }
     return this.props.children
   }
 
-  getFragment({name, result, basicResultQuery, params}) {
+  getFragment({name, result, basicResultQuery}) {
     if (this.props.fragment) {
       if (this.props.fragment.loc) {
         return this.props.fragment
       }
       return gql`${printGraphQL(this.props.fragment)}`
     }
-    return getFragment({name, result, basicResultQuery, params})
+    return getFragment({name, result, basicResultQuery})
   }
 
   render() {
@@ -181,7 +185,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
             client={client}
             refetchQueries={this.props.refetchQueries}
             params={params}
-            fragment={this.getFragment({name, result, basicResultQuery, params})}
+            fragment={this.getFragment({name, result, basicResultQuery})}
             mutation={this.props.mutation}
           >
             {(mutate: AutoFormFormProps['mutate']) => (
