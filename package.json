@@ -1,6 +1,6 @@
 {
   "name": "orionjs-react-autoform",
-  "version": "2.1.14",
+  "version": "2.2.0",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
