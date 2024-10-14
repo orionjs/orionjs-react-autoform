@@ -90,9 +90,6 @@ export const options: CreateAutoFormOptions = {
 
 export class AutoForm extends React.Component<AutoFormProps> {
   static defaultProps: Partial<AutoFormProps> = {
-    children: props => (
-      <Fields getField={options.getField} extendFields={props.extendFields || {}} {...props} />
-    ),
     clean: clean,
     validate: getValidationErrors,
     omit: [],
@@ -143,7 +140,27 @@ export class AutoForm extends React.Component<AutoFormProps> {
     this.onChange(newDoc)
   }
 
+  renderLoading() {
+    // if children is fixed, no need to show loading
+    if (typeof this.props.children === 'function' || !this.props.children) {
+      return <>{options.loading}</>
+    }
+
+    return <>{this.props.children}</>
+  }
+
   renderChildren({params}) {
+    if (!this.props.children) {
+      return (
+        <Fields
+          getField={options.getField}
+          extendFields={this.props.extendFields || {}}
+          params={params}
+          omit={this.props.omit}
+          only={this.props.only}
+        />
+      )
+    }
     if (typeof this.props.children === 'function') {
       return this.props.children({
         params,
@@ -177,7 +194,7 @@ export class AutoForm extends React.Component<AutoFormProps> {
       <WithParams
         fetchPolicy={this.props.fetchPolicy || options.defaultFetchPolicy}
         name={this.props.mutation}
-        loading={options.loading}
+        loading={this.renderLoading()}
         client={client}
       >
         {({name, result, basicResultQuery, params}) => (
