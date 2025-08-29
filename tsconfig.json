@@ -16,7 +16,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "lib": ["es2020", "dom"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "outDir": "dist"
   },
   "include": ["src"]

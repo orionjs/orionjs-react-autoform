@@ -168,7 +168,7 @@ export default class AutoFormForm extends React.Component<AutoFormFormProps, Aut
     const messages = {}
     for (const key of Object.keys(validationErrors)) {
       const code = validationErrors[key]
-      let keySchema = dotGetSchema(this.props.schema, key)
+      let keySchema = dotGetSchema(this.props.schema, key) as any
       if (!keySchema) continue
       keySchema = {label: this.props.getDefaultLabel(), ...keySchema}
       const text = this.props.getErrorText(code, keySchema) || code
